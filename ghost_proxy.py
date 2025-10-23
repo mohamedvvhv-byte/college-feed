@@ -7,23 +7,22 @@ from github import Github, InputGitTreeElement
 import os
 
 # ==============================================================================
-# 0. إعدادات Zoala-Eternal-Node (سيتم قراءة المفاتيح من خادم Render)
+# 0. إعدادات Zoala-Eternal-Node (مفاتيحك مُدمجة هنا مؤقتاً للتسجيل)
 # ==============================================================================
-API_ID = config('API_ID', cast=int)
-API_HASH = config('API_HASH')
-GITHUB_TOKEN = config('GITHUB_TOKEN')
-# تم دمج اسم المستودع الخاص بك:
+API_ID = 21657323
+API_HASH = "42a5e8f1171b74d44dbda8f07514942c"
+GITHUB_TOKEN = "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"
+
+# اسم المستودع (مُعدَّل):
 GITHUB_REPO_NAME = "mohamedvvhv/college-feed" 
 TARGET_FILE = 'data/college_feed.json'
 
-# يرجى تعديل هذه القائمة فقط بـ (IDs) أو أسماء المستخدمين (Username) للمجموعات.
-# **ملاحظة هامة:** تم استبدال روابط الدعوة بالروابط مباشرة للتشغيل الأول،
-# ولكن يُفضل استبدالها بالـ IDs (-100...) بعد الحصول عليها من تشغيل هذا الملف.
+# يرجى تعديل هذه القائمة لاحقاً بـ (IDs) بعد الحصول عليها.
+# (هذه هي روابط الدعوة للمحاولة الأولى للتسجيل)
 TARGET_GROUPS = [
-    'https://t.me/+MeDjVT5uqVc1MTJk', # الرابط الأول
-    'https://t.me/+F9pjf_-jiKIzOWQ0', # الرابط الثاني
-    'https://t.me/+HkZ7MNlXqDs0OTc0', # الرابط الثالث
-    # الرابط الرابع تم حذفه لأنه مكرر.
+    'https://t.me/+MeDjVT5uqVc1MTJk',
+    'https://t.me/+F9pjf_-jiKIzOWQ0',
+    'https://t.me/+HkZ7MNlXqDs0OTc0',
 ]
 
 # ==============================================================================
@@ -33,7 +32,10 @@ client = TelegramClient('zoala_college_session', API_ID, API_HASH)
 client.parse_mode = 'html'
 
 # 2. تهيئة GitHub
-g = Github(GITHUB_TOKEN)
+# **ملاحظة:** يتم تمرير التوكن عبر حقل auth لتجنب DeprecationWarning
+from github import Auth
+auth = Auth.Token(GITHUB_TOKEN)
+g = Github(auth=auth)
 repo = g.get_repo(GITHUB_REPO_NAME)
 
 # 3. دالة تحديث الملف على GitHub
