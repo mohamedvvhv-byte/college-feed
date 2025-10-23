@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>زهراء قلبي | الملخص الأبدي للجامعة</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        :root {
+            /* الألوان الجديدة (بناتية/وردية) */
+            --primary-color: #E91E63; /* وردي عميق (Rose Pink) - لون العناوين والأشرطة */
+            --secondary-color: #FFCDD2; /* وردي فاتح جداً - لون الخلفية/الإشعار الرومانسي */
+            --background-light: #FCE4EC; /* خلفية ناعمة جداً (خلفية الجسم) */
+            --text-dark: #333333;
+            --text-light: #FFFFFF;
+            --accent-color: #C2185B; /* لون تمييز أغمق للصور/الروابط */
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+            font-size: 2.2em;
+        }
+
+        header p {
+            font-size: 1.1em;
+            margin-top: 0;
+            font-weight: 400;
+        }
+
+        .love-note {
+            background-color: var(--secondary-color);
+            color: var(--primary-color); /* استخدام الوردى الغامق للنص */
+            padding: 15px;
+            margin: 20px auto;
+            border-radius: 12px;
+            max-width: 900px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-color); /* إضافة إطار وردي */
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .feed-item {
+            background-color: var(--text-light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border-right: 5px solid var(--primary-color); /* شريط جانبي وردي */
+            transition: transform 0.2s;
+        }
+        
+        .feed-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feed-group {
+            font-size: 0.9em;
+            color: var(--accent-color); /* لون تمييز أغمق */
+            font-weight: 700;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #FFCDD2;
+            padding-bottom: 5px;
+        }
+
+        .feed-text {
+            font-size: 1em;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+        }
+
+        .feed-media {
+            font-size: 0.85em;
+            color: var(--text-dark);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: block;
+            background-color: #FFEAEF; /* خلفية خفيفة جداً للميديا */
+            margin-top: 10px;
+        }
+
+        .feed-timestamp {
+            font-size: 0.8em;
+            color: #BDBDBD;
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>💎 الزهراء، يا نور عيني</h1>
+        <p>هذا الملخص الأبدي هو تقدير بسيط لجهدك، كل رسالة هنا تذكرني بمدى قوتك وإصرارك. **أنا أثق بكِ ثقة عمياء**، وأعلم أنكِ ستصلين لأعلى المراتب. أنا فخور بكِ دائمًا يا روحي.</p>
+    </header>
+
+    <div class="love-note">
+        "أتمنى أن يكون هذا الموقع هو الهدوء الذي تستحقينه بعد عناء اليوم. **يا زهرتي، كوني على ثقة أنكِ قادرة على فعل المستحيل!** 💖"
+    </div>
+
+    <div class="container">
+        <div id="feed" class="loading">جارٍ تحميل الملخصات...</div>
+    </div>
+
+    <div class="footer">
+        بواسطة حبيبك، لتبقي مرتاحة ومُشجعة. | جميع الحقوق محفوظة لقلبكِ.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const feedContainer = document.getElementById('feed');
+            const dataUrl = 'data/college_feed.json'; // مسار ملف البيانات
+
+            // دالة لتحويل التوقيت إلى صيغة مقروءة (منذ قليل، اليوم، بالأمس...)
+            function formatTimestamp(timestamp) {
+                const now = new Date();
+                const postTime = new Date(timestamp);
+                const diffMs = now - postTime;
+                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                
+                if (diffHours < 1) {
+                    return 'منذ قليل';
+                } else if (diffHours < 24) {
+                    return `منذ ${diffHours} ساعة`;
+                } else if (diffHours < 48) {
+                    return 'يوم أمس، ' + postTime.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+                } else {
+                    return postTime.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+                }
+            }
+
+            fetch(dataUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('فشل تحميل ملف البيانات.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.length === 0) {
+                        feedContainer.innerHTML = '<div class="loading">لا توجد ملخصات جديدة حتى الآن. استريحي قليلاً!</div>';
+                        return;
+                    }
+
+                    feedContainer.innerHTML = ''; // مسح رسالة التحميل
+                    
+                    data.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'feed-item';
+
+                        // اسم المجموعة
+                        const groupDiv = document.createElement('div');
+                        groupDiv.className = 'feed-group';
+                        groupDiv.textContent = item.group;
+                        itemDiv.appendChild(groupDiv);
+
+                        // محتوى الرسالة النصي
+                        if (item.text) {
+                            const textDiv = document.createElement('div');
+                            textDiv.className = 'feed-text';
+                            textDiv.textContent = item.text;
+                            itemDiv.appendChild(textDiv);
+                        }
+
+                        // المرفقات (المنطق الجديد لعرض الصور)
+                        if (item.media) {
+                            if (item.media.url && item.media.url.startsWith('http')) {
+                                // إذا كان هناك رابط صورة/ملف تم رفعه، اعرضه
+                                const mediaDiv = document.createElement('div');
+                                mediaDiv.className = 'feed-media';
+                                
+                                // عرض كصورة إذا كان الامتداد يدعم ذلك
+                                if (item.media.type === 'photo') {
+                                     mediaDiv.innerHTML = `
+                                        <p style="font-weight: bold; margin-bottom: 5px; color: var(--accent-color);">🖼️ تم تحميل صورة شرح!</p>
+                                        <img src="${item.media.url}" alt="مرفق من ${item.group}" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 5px; border: 1px solid var(--secondary-color);">
+                                    `;
+                                } else {
+                                     // عرض كملف قابل للتحميل (للملفات الصغيرة مثل PDF, GIF)
+                                     mediaDiv.innerHTML = `
+                                        <p style="font-weight: bold; margin-bottom: 5px; color: var(--accent-color);">📄 مرفق تم تحميله (اضغط للتحميل):</p>
+                                        <a href="${item.media.url}" target="_blank" style="color: var(--primary-color); text-decoration: underline;">${item.media.file_name || 'ملف مرفق'}</a>
+                                    `;
+                                }
+
+                                itemDiv.appendChild(mediaDiv);
+                            } else {
+                                // إذا لم يكن هناك رابط، اعرض تنبيه (للملفات الكبيرة/غير المدعومة)
+                                const mediaDiv = document.createElement('div');
+                                mediaDiv.className = 'feed-media';
+                                mediaDiv.style.border = '1px dashed #E57373'; // حدود وردية حمراء خفيفة للتنبيه
+                                mediaDiv.style.color = '#E57373';
+                                mediaDiv.textContent = `❌ مرفق ضخم (${item.media.type}) - لم يتم رفعه بسبب الحجم.`;
+                                itemDiv.appendChild(mediaDiv);
+                            }
+                        }
+
+                        // التوقيت
+                        const timeDiv = document.createElement('span');
+                        timeDiv.className = 'feed-timestamp';
+                        timeDiv.textContent = formatTimestamp(item.timestamp);
+                        itemDiv.appendChild(timeDiv);
+
+                        feedContainer.appendChild(itemDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    feedContainer.innerHTML = `<div class="loading">عذراً، حدث خطأ في تحميل البيانات. (السبب: ${error.message})</div>`;
+                });
+        });
+    </script>
+</body>
+</html>
